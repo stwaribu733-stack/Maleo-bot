@@ -298,6 +298,7 @@ async function startMaleo() {
 
   // ---- Pairing code flow (badala ya QR) ----
   if (!sock.authState.creds.registered) {
+    await sleep(3000); // subiri handshake ya WebSocket ikamilike kabla ya kuomba pairing code
     console.log(`📱 Naomba pairing code kwa namba: ${PHONE_NUMBER}`);
     const code = await sock.requestPairingCode(PHONE_NUMBER);
     console.log("\n🔑 PAIRING CODE YAKO: " + code + "\n");
@@ -313,7 +314,9 @@ async function startMaleo() {
       const statusCode = lastDisconnect?.error?.output?.statusCode;
       const shouldReconnect = statusCode !== DisconnectReason.loggedOut;
       console.log("Connection imefungwa. Kuunganisha tena:", shouldReconnect);
-      if (shouldReconnect) startMaleo();
+      if (shouldReconnect) {
+        setTimeout(() => startMaleo(), 3000);
+      }
     } else if (connection === "open") {
       console.log("✅ Maleo yuko online! Yanga SC forever. 🔴🟢");
     }
