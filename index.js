@@ -150,10 +150,17 @@ async function enhanceImagePrompt(swahiliPrompt) {
   }
 }
 
-async function generateImage(prompt) {
+async function generateImage(prompt, attempt = 1) {
   const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=1024&nologo=true`;
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`Pollinations HTTP ${res.status}`);
+  if (!res.ok) {
+    if (attempt < 3) {
+      console.log(`⚠️ Pollinations HTTP ${res.status}, jaribio ${attempt}/3...`);
+      await sleep(2000);
+      return generateImage(prompt, attempt + 1);
+    }
+    throw new Error(`Pollinations HTTP ${res.status}`);
+  }
   return Buffer.from(await res.arrayBuffer());
 }
 
@@ -371,3 +378,4 @@ startMaleo().catch((err) => {
   console.error("Fatal error:", err);
   process.exit(1);
 });
+      
