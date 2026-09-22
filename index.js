@@ -293,8 +293,10 @@ async function startMaleo() {
     if (connection === "close") {
       const statusCode = lastDisconnect?.error?.output?.statusCode;
       const shouldReconnect = statusCode !== DisconnectReason.loggedOut;
-      console.log("Connection imefungwa. Kuunganisha tena:", shouldReconnect);
-      if (shouldReconnect) setTimeout(() => startMaleo(), 3000);
+      const isRegistered = state.creds.registered;
+      const delayMs = isRegistered ? 3000 : 15000; // subiri zaidi kabla ya kuomba pairing code nyingine
+      console.log("Connection imefungwa. Kuunganisha tena:", shouldReconnect, "| baada ya (ms):", delayMs);
+      if (shouldReconnect) setTimeout(() => startMaleo(), delayMs);
     } else if (connection === "open") {
       console.log("✅ Maleo yuko online! Yanga SC forever. 🔴🟢");
     }
@@ -378,4 +380,3 @@ startMaleo().catch((err) => {
   console.error("Fatal error:", err);
   process.exit(1);
 });
-      
