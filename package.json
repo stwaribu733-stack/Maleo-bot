@@ -1,7 +1,7 @@
 {
-  "name": "maleo-bot",
-  "version": "2.0.0",
-  "description": "Maleo - WhatsApp bot, shabiki wa Yanga SC, anayejua kila kitu",
+  "name": "mrp-bot",
+  "version": "1.0.0",
+  "description": "Mr. P - WhatsApp bot, kijana wa kawaida anayejua kila kitu",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
